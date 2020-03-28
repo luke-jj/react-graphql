@@ -60,3 +60,17 @@ const testQuery = gql`
 `
 client.query({ query: testQuery }).then(res => console.log(res))
 ```
+
+## GraphQL Queries With Apollo Hooks - `useQuery`
+
+```javascript
+import { ApolloProvider, useQuery } from '@apollo/react-hooks'
+
+function Posts() {
+  const { loading, error, data } = useQuery(POSTS_QUERY)
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>An error occured...</p>
+
+  return data.posts.map(post => <h1>{post.title}</h1>)
+}
+```
