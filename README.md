@@ -159,3 +159,7 @@ const Post = ({ match }) => {
   )
 }
 ```
+
+
+## Mutations (create, update, delete)
+The `useMutation` hook is used to perform mutations.

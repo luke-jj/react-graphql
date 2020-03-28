@@ -6,6 +6,7 @@ import gql from 'graphql-tag'
 import './App.css'
 import Post from './posts/Post'
 import Posts from './posts/Posts'
+import NewPost from './posts/NewPost'
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_URI,
@@ -28,9 +29,11 @@ const App = () => (
     <Router>
       <div className="App">
         <header className="App-header">
-          Apollo React
+          <Link to="/">Apollo React</Link>
+          <Link to="/posts/new">New Post</Link>
           <Switch>
             <Route exact path="/" component={Posts} />
+            <Route path="/posts/new" component={NewPost} />
             <Route path="/posts/:id" component={Post} />
           </Switch>
         </header>
