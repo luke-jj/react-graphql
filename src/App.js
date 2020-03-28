@@ -1,43 +1,42 @@
 import React from 'react'
 import ApolloClient from 'apollo-boost'
-import { ApolloProvider, useQuery } from '@apollo/react-hooks'
+import { ApolloProvider } from '@apollo/react-hooks'
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import gql from 'graphql-tag'
 import './App.css'
+import Post from './posts/Post'
+import Posts from './posts/Posts'
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_URI,
 })
 
-const POSTS_QUERY = gql`
-  {
+const FIRST_QUERY = gql`
+  query fristQuery {
     posts {
       id
       title
       body
-      createdAt
     }
   }
 `
 
-client.query({ query: POSTS_QUERY }).then(res => console.log(res))
+client.query({ query: FIRST_QUERY }).then(res => console.log(res))
 
 const App = () => (
   <ApolloProvider client={client}>
-    <div className="App">
-      <header className="App-header">
-        Apollo React
-        <Posts />
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          Apollo React
+          <Switch>
+            <Route exact path="/" component={Posts} />
+            <Route path="/posts/:id" component={Post} />
+          </Switch>
+        </header>
+      </div>
+    </Router>
   </ApolloProvider>
 )
-
-function Posts() {
-  const { loading, error, data } = useQuery(POSTS_QUERY)
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>An error occured...</p>
-
-  return data.posts.map(post => <h1>{post.title}</h1>)
-}
 
 export default App
