@@ -23,10 +23,21 @@ const NEW_POST = gql`
   }
 `
 
+const PUBLISH_POST = gql`
+  mutation publishPost($id: ID!) {
+    publishPost(where: { id: $id }, to: PUBLISHED) {
+      id
+      publishedAt
+    }
+  }
+`
+
 const PostForm = () => {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
-  const [addPost, info] = useMutation(NEW_POST)
+  const [published, setPublished] = useState(false)
+  const [addPost, addStatus] = useMutation(NEW_POST)
+  const [publishPost, publishStatus] = useMutation(PUBLISH_POST)
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -35,8 +46,13 @@ const PostForm = () => {
     setBody('')
   }
 
-  if (info.data) {
-    return <p>Post added with id: {info.data.createPost.id}</p>
+  if (addStatus.data && !published) {
+    publishPost({ variables: { id: addStatus.data.createPost.id } })
+    setPublished(true)
+  }
+
+  if (addStatus.data) {
+    return <p>Post added with id: {addStatus.data.createPost.id}</p>
   }
 
   return (

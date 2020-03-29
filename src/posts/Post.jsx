@@ -1,6 +1,7 @@
 import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
+import UpdatePost from './UpdatePost'
 
 const POST_QUERY = gql`
   query post($id: ID!) {
@@ -25,8 +26,13 @@ const Post = ({ match }) => {
 
   return (
     <div>
-      <h2>{post.title}</h2>
-      <p>{post.body}</p>
+      <section>
+        <h2>{post.title}</h2>
+        <p>{post.body}</p>
+      </section>
+      <section>
+        <UpdatePost post={post} />
+      </section>
     </div>
   )
 }
